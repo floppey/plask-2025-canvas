@@ -13,25 +13,25 @@ export const RenderPaper: React.FC = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "white";
         // Draw a4 paper
-        const canvasAspectRatio = canvas.width / canvas.height;
+        const canvasAspectRatio = canvas.height / canvas.width;
         const a4AspectRatio = 297 / 210; // A4 paper aspect ratio
 
-        let paperWidth, paperHeight;
+        let a4Width, a4Height;
 
-        if (canvasAspectRatio > a4AspectRatio) {
-          // Canvas is wider than A4 paper
-          paperHeight = canvas.height * 0.875;
-          paperWidth = paperHeight * a4AspectRatio;
-        } else {
+        if (canvasAspectRatio < a4AspectRatio) {
           // Canvas is taller than A4 paper
-          paperWidth = canvas.width * 0.875;
-          paperHeight = paperWidth / a4AspectRatio;
+          a4Width = canvas.width * 0.875;
+          a4Height = a4Width / a4AspectRatio;
+        } else {
+          // Canvas is wider than A4 paper
+          a4Height = canvas.height * 0.875;
+          a4Width = a4Height * a4AspectRatio;
         }
 
-        const x = (canvas.width - paperWidth) / 2;
-        const y = (canvas.height - paperHeight) / 2;
+        const x = 0;
+        const y = 0;
 
-        ctx.fillRect(x, y, paperWidth, paperHeight);
+        ctx.fillRect(x, y, a4Width, a4Height);
       }
     }
   }, [canvasRef]);
@@ -40,7 +40,9 @@ export const RenderPaper: React.FC = () => {
     <>
       <h1>Steg 1: Tegne et A4-ark</h1>
       <div className="side-by-side">
-        <canvas ref={canvasRef} width="400" height="400"></canvas>
+        <div className="column">
+          <canvas ref={canvasRef} width="400" height="400"></canvas>
+        </div>
         <div className="column">
           <Code
             code={`

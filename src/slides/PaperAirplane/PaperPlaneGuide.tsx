@@ -16,7 +16,6 @@ export const PaperPlaneGuide: React.FC = () => {
       });
       if (ctx) {
         intervalId = setInterval(() => {
-          console.log("Drawing");
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.textAlign = "center";
 
@@ -29,7 +28,7 @@ export const PaperPlaneGuide: React.FC = () => {
 
             const angle = (Math.PI / (text.length - 1)) * i - Math.PI;
             const x = canvas.width / 2 + Math.cos(angle) * 300;
-            const y = canvas.height / 2 + Math.sin(angle) * 300;
+            const y = canvas.height / 1.25 + Math.sin(angle) * 300;
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(angle + Math.PI / 2);
@@ -53,7 +52,7 @@ export const PaperPlaneGuide: React.FC = () => {
   return (
     <>
       <h1>If you want something done right..</h1>
-      <canvas ref={canvasRef} width="800" height="800"></canvas>
+      <canvas ref={canvasRef} width="800" height="500"></canvas>
     </>
   );
 };
