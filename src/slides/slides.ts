@@ -6,6 +6,7 @@ import { PaperPlaneGuide } from "./PaperAirplane/PaperPlaneGuide";
 import { RenderPaper } from "./PaperAirplane/RenderPaper";
 import { MakeThingsMove } from "./PaperAirplane/MakeThingsMove";
 import { DottedLine } from "./PaperAirplane/DottedLine";
+import { FoldPaper } from "./PaperAirplane/FoldPaper";
 
 export const slides: Record<number, React.FC> = {
   0: FirstPage,
@@ -16,4 +17,5 @@ export const slides: Record<number, React.FC> = {
   5: RenderPaper,
   6: MakeThingsMove,
   7: DottedLine,
+  8: FoldPaper
 };
