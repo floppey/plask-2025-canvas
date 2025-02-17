@@ -12,12 +12,12 @@ function App() {
     if (e.key === "ArrowRight") {
       const numberOfSlides = Object.keys(slides).length;
       step = Math.min(numberOfSlides, step + 1);
-      navigate(`/${step}`, { replace: true });
+      navigate(`/${step}`);
     }
     if (e.key === "ArrowLeft") {
       const nextStep = Math.max(0, step - 1);
       step = nextStep;
-      navigate(`/${nextStep}`, { replace: true });
+      navigate(`/${nextStep}`);
     }
   });
 
