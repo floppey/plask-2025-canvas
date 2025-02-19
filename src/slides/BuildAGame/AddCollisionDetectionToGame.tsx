@@ -197,7 +197,7 @@ class Player {
   // PS! player.y is the bottom of the player while platform.y is the top of the platform
   isOnPlatform(platform: Platform) {
     // Snap to platform if player partly inside platform
-    const tolerance = 5;
+    const tolerance = 10;
     return (
       this.x + this.width / 2 > platform.x &&
       this.x - this.width / 2 < platform.x + platform.width &&
