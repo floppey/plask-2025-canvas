@@ -8,24 +8,49 @@ import { MakeThingsMove } from "./PaperAirplane/MakeThingsMove";
 import { DottedLine } from "./PaperAirplane/DottedLine";
 import { FoldPaper } from "./PaperAirplane/FoldPaper";
 import { FlappyBirdClone } from "./Games/FlappyBirdClone";
-import { JavascriptClasses } from "./BuildAGame/JavascriptClasses";
+import { CreateAGameClass } from "./BuildAGame/CreateAGameClass";
 import { Minesweeper } from "./Games/Minesweeper";
 import { AdventureMan } from "./Games/AdventureMan";
 import { WhereToBegin } from "./BuildAGame/WhereToBegin";
+import { CreateAPlayer } from "./BuildAGame/CreateAPlayer";
+import { AddPlayerToGame } from "./BuildAGame/AddPlayerToGame";
+import { UserInput } from "./BuildAGame/UserInput";
+import { AddUserInputToGame } from "./BuildAGame/AddUserInputToGame";
+import { Physics } from "./BuildAGame/Physics";
+import { AddPhysicsToGame } from "./BuildAGame/AddPhysicsToGame";
+import { Platforms } from "./BuildAGame/Platforms";
+import { AddPlatformsToGame } from "./BuildAGame/AddPlatformsToGame";
+import { AddCollisionDetectionToGame } from "./BuildAGame/AddCollisionDetectionToGame";
 
-export const slides: Record<number, React.FC> = {
-  0: FirstPage,
-  1: AboutMe,
-  2: Introduction,
-  3: PaperPlaneGuide,
-  4: FoldingPaper,
-  5: RenderPaper,
-  6: MakeThingsMove,
-  7: DottedLine,
-  8: FoldPaper,
-  9: FlappyBirdClone,
-  10: Minesweeper,
-  11: AdventureMan,
-  12: WhereToBegin,
-  13: JavascriptClasses,
-};
+const slideArray = [
+  FirstPage,
+  AboutMe,
+  Introduction,
+  PaperPlaneGuide,
+  FoldingPaper,
+  RenderPaper,
+  MakeThingsMove,
+  DottedLine,
+  FoldPaper,
+  FlappyBirdClone,
+  Minesweeper,
+  AdventureMan,
+  WhereToBegin,
+  CreateAGameClass,
+  CreateAPlayer,
+  AddPlayerToGame,
+  UserInput,
+  AddUserInputToGame,
+  Physics,
+  AddPhysicsToGame,
+  Platforms,
+  AddPlatformsToGame,
+  AddCollisionDetectionToGame
+]
+
+const slides: Record<number, React.FC> = {};
+slideArray.forEach((slide, index) => {
+  slides[index] = slide;
+});
+
+export { slides };

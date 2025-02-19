@@ -1,9 +1,9 @@
 import { Code } from "../../components/Code";
 
-export const JavascriptClasses: React.FC = () => {
+export const CreateAGameClass: React.FC = () => {
   return (
     <>
-      <h1>class</h1>
+      <h1>Game class</h1>
       <div className="side-by-side">
         <div className="column">
           <Code
@@ -20,15 +20,13 @@ class Game {
   async update() {
     /** 
      * Update game state here
-     */ 
-    setTimeout(() => this.update(), 1000 / 120);
+     */
   }
 
   async draw() {
     /** 
      * Draw game state here
-     */ 
-    requestAnimationFrame(() => this.draw());
+     */
   }
 }
 `}
