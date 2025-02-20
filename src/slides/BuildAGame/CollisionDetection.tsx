@@ -17,8 +17,8 @@ class Player {
     // Snap to platform if player is close enough
     const tolerance = 5;
     return (
-      this.x + this.width / 2 > platform.x &&
-      this.x - this.width / 2 < platform.x + platform.width &&
+      this.x + this.width > platform.x &&
+      this.x < platform.x + platform.width &&
       this.y >= platform.y &&
       this.y <= platform.y + tolerance
     );

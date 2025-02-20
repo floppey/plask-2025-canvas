@@ -5,14 +5,17 @@ class Player {
   game: Game;
   x: number;
   y: number;
-  height: number = 10;
-  width: number = 10;
+  height: number = 64;
+  width: number = 64;
   velocityY: number = 0;
+  sprite: HTMLImageElement;
 
   constructor(game: Game, x: number, y: number) {
     this.game = game;
     this.x = x;
     this.y = y;
+    this.sprite = new Image();
+    this.sprite.src = "/sprite.png";
   }
 
   async update() {
@@ -26,6 +29,15 @@ class Player {
     this.velocityY = Math.min(this.velocityY + 0.5, 10);
     this.y += this.velocityY;
 
+    // Only check for collision if player is falling
+    if (this.velocityY > 0) {
+      const platform = this.game.platforms.find(platform => this.isOnPlatform(platform));
+      if (platform) {
+        this.y = platform.y;
+        this.velocityY = 0;
+      }
+    }
+
     this.y = Math.min(this.y, this.game.canvas.height);
     this.y = Math.max(this.y, this.height);
     this.x = Math.min(this.x, this.game.canvas.width - this.width / 2);
@@ -33,9 +45,31 @@ class Player {
   }
 
   async draw() {
-    this.game.ctx.fillStyle = "black";
-    this.game.ctx.fillRect(
-      this.x - this.width / 2,
+    const spriteSize = 64;
+    let row = 0;
+    let col = 0;
+    let numberOfFrames: number;
+
+    if (this.game.input.pressedKeys["A"] && !this.game.input.pressedKeys["D"]) {
+      row = 9;
+      numberOfFrames = 9;
+    } else if (this.game.input.pressedKeys["D"] && !this.game.input.pressedKeys["A"]) {
+      row = 11;
+      numberOfFrames = 9;
+    } else {
+      row = 14;
+      numberOfFrames = 1;
+    }
+
+    col = Math.floor((Date.now() / 100) % numberOfFrames);
+
+    this.game.ctx.drawImage(
+      this.sprite,
+      col * spriteSize,
+      row * spriteSize,
+      spriteSize,
+      spriteSize,
+      this.x,
       this.y - this.height,
       this.width,
       this.height
@@ -44,6 +78,18 @@ class Player {
 
   jump() {
     this.velocityY = -10;
+  }
+
+  // PS! player.y is the bottom of the player while platform.y is the top of the platform
+  isOnPlatform(platform: Platform) {
+    // Snap to platform if player partly inside platform
+    const tolerance = 10;
+    return (
+      this.x + this.width > platform.x &&
+      this.x < platform.x + platform.width &&
+      this.y >= platform.y &&
+      this.y <= platform.y + tolerance
+    );
   }
 }
 
@@ -135,7 +181,7 @@ class Game {
   }
 }
 
-export const AddPlatformsToGame: React.FC = () => {
+export const AddSpriteToGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -162,30 +208,57 @@ export const AddPlatformsToGame: React.FC = () => {
 
   return (
     <>
-      <h1>Legg til plattformer i spillet</h1>
+      <h1>Animer spilleren</h1>
       <div className="side-by-side">
         <div className="column">
           <canvas ref={canvasRef} width="600" height="400"></canvas>
         </div>
         <div className="column">
           <Code
+            fontSize="small"
             code={`
-class Game {
+class Player {
   ...
-  platforms: Platform[] = [];
+  sprite: HTMLImageElement;  
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(game: Game, x: number, y: number) {
     ...
-    this.platforms.push(new Platform(this, ...));
-    this.platforms.push(new Platform(this, ...));
+    this.sprite = new Image();
+    this.sprite.src = "/sprite.png";
   }
 
   async draw() {
-    ...
-    await this.platforms.forEach(platform => platform.draw());
+    const spriteSize = 64;
+    let row = 0;
+    let col = 0;
+    let numberOfFrames: number;
+
+    if (this.game.input.pressedKeys["A"] && !this.game.input.pressedKeys["D"]) {
+      row = 9;
+      numberOfFrames = 9;
+    } else if (this.game.input.pressedKeys["D"] && !this.game.input.pressedKeys["A"]) {
+      row = 11;
+      numberOfFrames = 9;
+    } else {
+      row = 14;
+      numberOfFrames = 1;
+    }
+
+    col = Math.floor((Date.now() / 100) % numberOfFrames);
+
+    this.game.ctx.drawImage(
+      this.sprite,
+      col * spriteSize,
+      row * spriteSize,
+      spriteSize,
+      spriteSize,
+      this.x,
+      this.y - this.height,
+      this.width,
+      this.height
+    );
   }
 }
-
 `}
           />
         </div>

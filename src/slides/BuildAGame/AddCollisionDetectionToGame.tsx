@@ -17,10 +17,10 @@ class Player {
 
   async update() {
     if (this.game.input.pressedKeys["A"]) {
-      this.x -= 10;
+      this.x -= 5;
     }
     if (this.game.input.pressedKeys["D"]) {
-      this.x += 10;
+      this.x += 5;
     }
 
     this.velocityY = Math.min(this.velocityY + 0.5, 10);
@@ -60,8 +60,8 @@ class Player {
     // Snap to platform if player partly inside platform
     const tolerance = 10;
     return (
-      this.x + this.width / 2 > platform.x &&
-      this.x - this.width / 2 < platform.x + platform.width &&
+      this.x + this.width > platform.x &&
+      this.x < platform.x + platform.width &&
       this.y >= platform.y &&
       this.y <= platform.y + tolerance
     );
@@ -199,8 +199,8 @@ class Player {
     // Snap to platform if player partly inside platform
     const tolerance = 10;
     return (
-      this.x + this.width / 2 > platform.x &&
-      this.x - this.width / 2 < platform.x + platform.width &&
+      this.x + this.width > platform.x &&
+      this.x < platform.x + platform.width &&
       this.y >= platform.y &&
       this.y <= platform.y + tolerance
     );

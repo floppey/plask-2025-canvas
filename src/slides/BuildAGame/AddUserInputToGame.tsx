@@ -16,10 +16,10 @@ class Player {
 
   async update() {
     if (this.game.input.pressedKeys["A"]) {
-      this.x -= 10;
+      this.x -= 5;
     }
     if (this.game.input.pressedKeys["D"]) {
-      this.x += 10;
+      this.x += 5;
     }
   }
 
@@ -144,10 +144,10 @@ class Player {
 
   async update() {
     if(this.game.input.pressedKeys["A"]) {
-      this.x -= 10;
+      this.x -= 5;
     }
     if(this.game.input.pressedKeys["D"]) {
-      this.x += 10;
+      this.x += 5;
     }
   }
 }

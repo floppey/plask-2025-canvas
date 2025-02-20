@@ -21,6 +21,9 @@ import { AddPhysicsToGame } from "./BuildAGame/AddPhysicsToGame";
 import { Platforms } from "./BuildAGame/Platforms";
 import { AddPlatformsToGame } from "./BuildAGame/AddPlatformsToGame";
 import { AddCollisionDetectionToGame } from "./BuildAGame/AddCollisionDetectionToGame";
+import { Sprites } from "./MakeItPretty/Sprites";
+import { AnimateSprite } from "./MakeItPretty/AnimateSprite";
+import { AddSpriteToGame } from "./MakeItPretty/AddSpriteToGame";
 
 const slideArray = [
   FirstPage,
@@ -45,7 +48,10 @@ const slideArray = [
   AddPhysicsToGame,
   Platforms,
   AddPlatformsToGame,
-  AddCollisionDetectionToGame
+  AddCollisionDetectionToGame,
+  Sprites,
+  AnimateSprite,
+  AddSpriteToGame,
 ]
 
 const slides: Record<number, React.FC> = {};
