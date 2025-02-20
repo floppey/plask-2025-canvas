@@ -10,10 +10,7 @@ export const AnimateSprite: React.FC = () => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
 
-
-
       if (ctx) {
-
         const drawSprite = async () => {
           const spriteHeight = 64;
           const spriteWidth = 64;
@@ -45,16 +42,11 @@ export const AnimateSprite: React.FC = () => {
           animationFrameId = requestAnimationFrame(drawSprite);
         };
 
-
         const sprite = new Image();
-        sprite.src = '/sprite.png';
+        sprite.src = "/sprite.png";
         sprite.onload = () => {
           drawSprite();
         };
-
-
-
-
       }
     }
     return () => {

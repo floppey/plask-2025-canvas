@@ -38,7 +38,6 @@ class Player {
 `}
           />
         </div>
-
       </div>
     </>
   );

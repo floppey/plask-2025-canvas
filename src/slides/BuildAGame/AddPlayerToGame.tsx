@@ -56,14 +56,12 @@ export const AddPlayerToGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-
     if (canvasRef.current) {
       const game = new Game(canvasRef.current);
 
       game.draw();
     }
-  }
-    , [canvasRef]);
+  }, [canvasRef]);
 
   return (
     <>
@@ -100,4 +98,4 @@ class Game {
       </div>
     </>
   );
-}
+};

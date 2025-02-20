@@ -64,7 +64,6 @@ class InputHandler {
   }
 }
 
-
 class Game {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
@@ -116,8 +115,7 @@ export const AddUserInputToGame: React.FC = () => {
       cancelAnimationFrame(id);
       game?.destroy();
     };
-  }
-    , [canvasRef]);
+  }, [canvasRef]);
 
   return (
     <>
@@ -157,4 +155,4 @@ class Player {
       </div>
     </>
   );
-}
+};

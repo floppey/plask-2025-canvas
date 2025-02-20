@@ -31,7 +31,6 @@ class Platform {
 `}
           />
         </div>
-
       </div>
     </>
   );

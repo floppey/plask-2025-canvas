@@ -52,7 +52,7 @@ const slideArray = [
   Sprites,
   AnimateSprite,
   AddSpriteToGame,
-]
+];
 
 const slides: Record<number, React.FC> = {};
 slideArray.forEach((slide, index) => {

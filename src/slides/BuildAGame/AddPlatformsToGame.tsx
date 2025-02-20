@@ -101,7 +101,6 @@ class Platform {
   }
 }
 
-
 class Game {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
@@ -114,8 +113,24 @@ class Game {
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.player = new Player(this, canvas.width / 2, canvas.height / 2);
     this.input = new InputHandler(this);
-    this.platforms.push(new Platform(this, canvas.width / 4, canvas.height / 2, 20, canvas.width / 4));
-    this.platforms.push(new Platform(this, canvas.width / 1.5, canvas.height / 1.25, 20, canvas.width / 4));
+    this.platforms.push(
+      new Platform(
+        this,
+        canvas.width / 4,
+        canvas.height / 2,
+        20,
+        canvas.width / 4
+      )
+    );
+    this.platforms.push(
+      new Platform(
+        this,
+        canvas.width / 1.5,
+        canvas.height / 1.25,
+        20,
+        canvas.width / 4
+      )
+    );
   }
 
   async update() {
@@ -127,7 +142,7 @@ class Game {
     this.ctx.fillStyle = "white";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     await this.player.draw();
-    await this.platforms.forEach(platform => platform.draw());
+    await this.platforms.forEach((platform) => platform.draw());
   }
 
   destroy() {
@@ -157,8 +172,7 @@ export const AddPlatformsToGame: React.FC = () => {
       cancelAnimationFrame(id);
       game?.destroy();
     };
-  }
-    , [canvasRef]);
+  }, [canvasRef]);
 
   return (
     <>
@@ -192,4 +206,4 @@ class Game {
       </div>
     </>
   );
-}
+};

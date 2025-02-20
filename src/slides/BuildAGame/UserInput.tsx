@@ -27,7 +27,6 @@ class InputHandler {
 `}
           />
         </div>
-
       </div>
     </>
   );
