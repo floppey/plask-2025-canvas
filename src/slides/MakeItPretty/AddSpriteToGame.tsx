@@ -42,8 +42,8 @@ class Player {
 
     this.y = Math.min(this.y, this.game.canvas.height);
     this.y = Math.max(this.y, this.height);
-    this.x = Math.min(this.x, this.game.canvas.width - this.width / 2);
-    this.x = Math.max(this.x, this.width / 2);
+    this.x = Math.min(this.x, this.game.canvas.width - this.width);
+    this.x = Math.max(this.x, 0);
   }
 
   async draw() {
