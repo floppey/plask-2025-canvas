@@ -24,6 +24,9 @@ import { AddCollisionDetectionToGame } from "./BuildAGame/AddCollisionDetectionT
 import { Sprites } from "./MakeItPretty/Sprites";
 import { AnimateSprite } from "./MakeItPretty/AnimateSprite";
 import { AddSpriteToGame } from "./MakeItPretty/AddSpriteToGame";
+import { Monsters } from "./Monsters/Monsters";
+import { Unit } from "./Monsters/Unit";
+import { KillMonster } from "./Monsters/KillMonster";
 
 const slideArray = [
   FirstPage,
@@ -52,6 +55,9 @@ const slideArray = [
   Sprites,
   AnimateSprite,
   AddSpriteToGame,
+  Unit,
+  Monsters,
+  KillMonster,
 ];
 
 const slides: Record<number, React.FC> = {};
