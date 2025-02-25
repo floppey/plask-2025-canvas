@@ -27,6 +27,9 @@ import { AddSpriteToGame } from "./MakeItPretty/AddSpriteToGame";
 import { Monsters } from "./Monsters/Monsters";
 import { Unit } from "./Monsters/Unit";
 import { KillMonster } from "./Monsters/KillMonster";
+import { Lives } from "./Monsters/Lives";
+import { Invulnerability } from "./Monsters/Invulnerability";
+import { Death } from "./Monsters/Death";
 
 const slideArray = [
   FirstPage,
@@ -58,6 +61,9 @@ const slideArray = [
   Unit,
   Monsters,
   KillMonster,
+  Lives,
+  Invulnerability,
+  Death,
 ];
 
 const slides: Record<number, React.FC> = {};

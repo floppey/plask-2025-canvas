@@ -50,10 +50,27 @@ class Unit {
       this.y <= platform.y + tolerance
     );
   }
+
+  landsOnUnit(unit: Unit): boolean {
+    if (this.velocityY <= 0) {
+      return false;
+    }
+    return this.collidesWith(unit);
+  }
+
+  collidesWith(unit: Unit): boolean {
+    return (
+      this.x + this.width > unit.x &&
+      this.x < unit.x + unit.width &&
+      this.y <= unit.y &&
+      this.y >= unit.y - unit.height
+    );
+  }
 }
 
 class Player extends Unit {
   sprite: HTMLImageElement;
+  lives: number = 3;
 
   constructor(game: Game, x: number, y: number) {
     super(game, x, y);
@@ -68,6 +85,17 @@ class Player extends Unit {
     if (this.game.input.pressedKeys["D"]) {
       this.x += 5;
     }
+    this.game.monsters.forEach((monster) => {
+      if (this.landsOnUnit(monster)) {
+        this.game.monsters = this.game.monsters.filter(
+          (m) => m.id !== monster.id
+        );
+        this.velocityY = -5;
+      } else if (this.collidesWith(monster)) {
+        this.lives -= 1;
+      }
+    });
+
     super.update();
   }
 
@@ -259,6 +287,12 @@ class Game {
     await this.player.draw();
     await this.platforms.forEach((platform) => platform.draw());
     await this.monsters.forEach((monster) => monster.draw());
+
+    for (let i = 0; i < this.player.lives; i++) {
+      this.ctx.fillStyle = "red";
+      this.ctx.font = "20px Arial";
+      this.ctx.fillText("❤️", 10 + i * 30, 30);
+    }
   }
 
   destroy() {
@@ -266,7 +300,7 @@ class Game {
   }
 }
 
-export const Monsters: React.FC = () => {
+export const Lives: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -292,7 +326,7 @@ export const Monsters: React.FC = () => {
 
   return (
     <>
-      <h1>Monster</h1>
+      <h1>Liv ❤️</h1>
       <div className="side-by-side">
         <div className="column">
           <canvas ref={canvasRef} width="600" height="400"></canvas>
@@ -301,44 +335,25 @@ export const Monsters: React.FC = () => {
           <Code
             fontSize="small"
             code={`
-class Monster extends Unit {
+class Player extends Unit {
   ...
-  direction: "left" | "right" = "right";
-  speed: number = 1;
+  lives: number = 3;
 
   async update() {
+    ...
+    this.game.monsters.forEach((monster) => {
+      if (this.landsOnUnit(monster)) {
+        this.game.monsters = this.game.monsters.filter(
+          (m) => m.id !== monster.id
+        );
+        this.velocityY = -5;
+      } else if (this.collidesWith(monster)) {
+        this.lives -= 1;
+      }
+    });
+
     super.update();
-    const platform = this.game.platforms.find((platform) =>
-      this.isOnPlatform(platform)
-    );
-    const minX = platform?.x || 0;
-    const maxX = platform ? platform.x + platform.width : this.game.canvas.width;
-
-    if (this.direction === "right") {
-      this.x += this.speed;
-    } else {
-      this.x -= this.speed;
-    }
-
-    if (this.x >= maxX) {
-      this.direction = "left";
-      this.x = maxX;
-    } else if (this.x <= minX) {
-      this.direction = "right";
-      this.x = minX;
-    }    
   }
-
-  async draw() {
-    this.game.ctx.fillStyle = "red";
-    this.game.ctx.fillRect(
-      this.x, 
-      this.y - this.height, 
-      this.width, 
-      this.height
-    );
-  }
-}
 `}
           />
         </div>

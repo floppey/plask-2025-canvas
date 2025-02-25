@@ -59,6 +59,7 @@ class InputHandler {
       const event = e as KeyboardEvent;
       this.pressedKeys[event.key.toUpperCase()] = true;
       if (event.key === " ") {
+        event.preventDefault();
         this.game.player.jump();
       }
     };
@@ -121,14 +122,14 @@ export const AddPhysicsToGame: React.FC = () => {
       const loop = async () => {
         await game?.update();
         game?.draw();
-        id = requestAnimationFrame(loop);
+        id = setTimeout(() => loop(), 1000 / 120);
       };
 
       loop();
     }
 
     return () => {
-      cancelAnimationFrame(id);
+      clearTimeout(id);
       game?.destroy();
     };
   }, [canvasRef]);

@@ -50,10 +50,29 @@ class Unit {
       this.y <= platform.y + tolerance
     );
   }
+
+  landsOnUnit(unit: Unit): boolean {
+    if (this.velocityY <= 0) {
+      return false;
+    }
+    return this.collidesWith(unit);
+  }
+
+  collidesWith(unit: Unit): boolean {
+    return (
+      this.x + this.width > unit.x &&
+      this.x < unit.x + unit.width &&
+      this.y <= unit.y &&
+      this.y >= unit.y - unit.height
+    );
+  }
 }
 
 class Player extends Unit {
   sprite: HTMLImageElement;
+  lives: number = 3;
+  invulnerable: number = 0;
+  timeOfDeath: number | null = null;
 
   constructor(game: Game, x: number, y: number) {
     super(game, x, y);
@@ -62,12 +81,33 @@ class Player extends Unit {
   }
 
   async update() {
+    if (this.isDead()) {
+      return;
+    }
     if (this.game.input.pressedKeys["A"]) {
       this.x -= 5;
     }
     if (this.game.input.pressedKeys["D"]) {
       this.x += 5;
     }
+    if (!this.isInvulnerable()) {
+      this.game.monsters.forEach((monster) => {
+        if (this.landsOnUnit(monster)) {
+          this.game.monsters = this.game.monsters.filter(
+            (m) => m.id !== monster.id
+          );
+          this.velocityY = -5;
+        } else if (this.collidesWith(monster)) {
+          this.lives -= 1;
+          if (this.lives <= 0) {
+            this.timeOfDeath = Date.now();
+          } else {
+            this.invulnerable = Date.now() + 1000;
+          }
+        }
+      });
+    }
+
     super.update();
   }
 
@@ -77,7 +117,13 @@ class Player extends Unit {
     let col = 0;
     let numberOfFrames: number;
 
-    if (this.game.input.pressedKeys["A"] && !this.game.input.pressedKeys["D"]) {
+    if (this.isDead()) {
+      row = 20;
+      numberOfFrames = 6;
+    } else if (
+      this.game.input.pressedKeys["A"] &&
+      !this.game.input.pressedKeys["D"]
+    ) {
       row = 9;
       numberOfFrames = 9;
     } else if (
@@ -93,6 +139,15 @@ class Player extends Unit {
 
     col = Math.floor((Date.now() / 100) % numberOfFrames);
 
+    if (this.isDead()) {
+      col = Math.min(5, Math.floor((Date.now() - this.timeOfDeath) / 100));
+    }
+
+    this.game.ctx.save();
+    if (this.isInvulnerable()) {
+      this.game.ctx.globalAlpha =
+        0.15 + 0.5 * Math.abs(Math.sin(Date.now() / 100));
+    }
     this.game.ctx.drawImage(
       this.sprite,
       col * spriteSize,
@@ -104,6 +159,15 @@ class Player extends Unit {
       this.width,
       this.height
     );
+    this.game.ctx.restore();
+  }
+
+  isInvulnerable() {
+    return this.invulnerable > Date.now();
+  }
+
+  isDead(): this is { timeOfDeath: number } {
+    return this.timeOfDeath !== null;
   }
 
   jump() {
@@ -259,6 +323,44 @@ class Game {
     await this.player.draw();
     await this.platforms.forEach((platform) => platform.draw());
     await this.monsters.forEach((monster) => monster.draw());
+    if (this.player.isDead()) {
+      this.ctx.save();
+      const gradient = this.ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        this.canvas.height
+      );
+      gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      gradient.addColorStop(0.25, "rgba(0, 0, 0, 0.25)");
+      gradient.addColorStop(0.5, "rgba(0, 0, 0, 1)");
+      gradient.addColorStop(0.75, "rgba(0, 0, 0, 0.25)");
+      gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+      this.ctx.fillStyle = gradient;
+      this.ctx.fillRect(
+        0,
+        this.canvas.height / 3,
+        this.canvas.width,
+        this.canvas.height / 3
+      );
+
+      this.ctx.fillStyle = "red";
+      this.ctx.font = "60px Times New Roman";
+      this.ctx.textAlign = "center";
+      this.ctx.textBaseline = "middle";
+      this.ctx.fillText(
+        "YOU DIED",
+        this.canvas.width / 2,
+        this.canvas.height / 2
+      );
+      this.ctx.restore();
+    } else {
+      for (let i = 0; i < this.player.lives; i++) {
+        this.ctx.fillStyle = "red";
+        this.ctx.font = "20px Arial";
+        this.ctx.fillText("❤️", 10 + i * 30, 30);
+      }
+    }
   }
 
   destroy() {
@@ -266,7 +368,7 @@ class Game {
   }
 }
 
-export const Monsters: React.FC = () => {
+export const Death: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -292,7 +394,7 @@ export const Monsters: React.FC = () => {
 
   return (
     <>
-      <h1>Monster</h1>
+      <h1>Død 💀</h1>
       <div className="side-by-side">
         <div className="column">
           <canvas ref={canvasRef} width="600" height="400"></canvas>
@@ -301,43 +403,38 @@ export const Monsters: React.FC = () => {
           <Code
             fontSize="small"
             code={`
-class Monster extends Unit {
+class Player extends Unit {
   ...
-  direction: "left" | "right" = "right";
-  speed: number = 1;
+  timeOfDeath: number | null = null;
+
+  isDead(): this is { timeOfDeath: number } {
+    return this.timeOfDeath !== null;
+  }
 
   async update() {
-    super.update();
-    const platform = this.game.platforms.find((platform) =>
-      this.isOnPlatform(platform)
-    );
-    const minX = platform?.x || 0;
-    const maxX = platform ? platform.x + platform.width : this.game.canvas.width;
-
-    if (this.direction === "right") {
-      this.x += this.speed;
-    } else {
-      this.x -= this.speed;
+    if(this.isDead()) { return; }
+    ...
+    if (this.collidesWith(monster)) {
+      this.lives -= 1;
+      if (this.lives <= 0) {
+        this.timeOfDeath = Date.now();
+      } else {
+        this.invulnerable = Date.now() + 1000;
+      }
     }
-
-    if (this.x >= maxX) {
-      this.direction = "left";
-      this.x = maxX;
-    } else if (this.x <= minX) {
-      this.direction = "right";
-      this.x = minX;
-    }    
   }
 
   async draw() {
-    this.game.ctx.fillStyle = "red";
-    this.game.ctx.fillRect(
-      this.x, 
-      this.y - this.height, 
-      this.width, 
-      this.height
-    );
-  }
+    ...
+    if (this.isDead()) {
+      row = 20;
+      numberOfFrames = 6;
+    }
+    ...
+    if (this.isDead()) {
+      col = Math.min(5, Math.floor((Date.now() - this.timeOfDeath) / 100));
+    }
+  } 
 }
 `}
           />

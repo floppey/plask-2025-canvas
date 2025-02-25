@@ -18,7 +18,6 @@ class Unit {
   }
 
   async update() {
-
     this.velocityY = Math.min(this.velocityY + 0.5, 10);
     this.y += this.velocityY;
 
@@ -39,7 +38,7 @@ class Unit {
     this.x = Math.max(this.x, 0);
   }
 
-  async draw() { }
+  async draw() {}
 
   isOnPlatform(platform: Platform) {
     // Snap to platform if player partly inside platform
@@ -56,12 +55,11 @@ class Unit {
     if (this.velocityY <= 0) {
       return false;
     }
-
     return (
       this.x + this.width > unit.x &&
       this.x < unit.x + unit.width &&
-      this.y >= unit.y &&
-      this.y <= unit.y + unit.height
+      this.y <= unit.y &&
+      this.y >= unit.y - unit.height
     );
   }
 }
@@ -145,7 +143,9 @@ class Monster extends Unit {
       this.isOnPlatform(platform)
     );
     const minX = platform?.x || 0;
-    const maxX = (platform ? platform.x + platform.width : this.game.canvas.width) - this.width;
+    const maxX =
+      (platform ? platform.x + platform.width : this.game.canvas.width) -
+      this.width;
 
     if (this.direction === "right") {
       this.x += this.speed;
@@ -185,6 +185,7 @@ class InputHandler {
       const event = e as KeyboardEvent;
       this.pressedKeys[event.key.toUpperCase()] = true;
       if (event.key === " ") {
+        event.preventDefault();
         this.game.player.jump();
       }
     };
@@ -258,8 +259,12 @@ class Game {
         canvas.width / 4
       )
     );
-    this.monsters.push(new Monster(this, canvas.width / 1.5, canvas.height / 2));
-    this.monsters.push(new Monster(this, canvas.width / 2.5, canvas.height / 3.25));
+    this.monsters.push(
+      new Monster(this, canvas.width / 1.5, canvas.height / 2)
+    );
+    this.monsters.push(
+      new Monster(this, canvas.width / 2.5, canvas.height / 3.25)
+    );
   }
 
   async update() {
@@ -293,21 +298,21 @@ export const KillMonster: React.FC = () => {
       const loop = async () => {
         await game?.update();
         game?.draw();
-        id = requestAnimationFrame(loop);
+        id = setTimeout(() => loop(), 1000 / 120);
       };
 
       loop();
     }
 
     return () => {
-      cancelAnimationFrame(id);
+      clearTimeout(id);
       game?.destroy();
     };
   }, [canvasRef]);
 
   return (
     <>
-      <h1>Monster</h1>
+      <h1>Drepe monster</h1>
       <div className="side-by-side">
         <div className="column">
           <canvas ref={canvasRef} width="600" height="400"></canvas>
@@ -326,7 +331,7 @@ class Player {
         this.game.monsters = this.game.monsters.filter(
           (m) => m.id !== monster.id
         );
-        this.velocityY = -5;
+        this.velocityY = -8;
       }
     });
   }
@@ -338,8 +343,8 @@ class Player {
     return (
       this.x + this.width > unit.x &&
       this.x < unit.x + unit.width &&
-      this.y >= unit.y &&
-      this.y <= unit.y + unit.height
+      this.y <= unit.y &&
+      this.y >= unit.y - unit.height
     );
   }
 }
