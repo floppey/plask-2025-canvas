@@ -30,6 +30,13 @@ import { KillMonster } from "./Monsters/KillMonster";
 import { Lives } from "./Monsters/Lives";
 import { Invulnerability } from "./Monsters/Invulnerability";
 import { Death } from "./Monsters/Death";
+import { Pointers } from "./BeforeTheGame/Pointers";
+import { RethinkJavascript } from "./BeforeTheGame/RethinkJavascript";
+import { Classes } from "./BeforeTheGame/Classes";
+import { PrivateFields } from "./BeforeTheGame/PrivateProperties";
+import { PointersExample } from "./BeforeTheGame/PointersExample";
+import { ClassInhericance } from "./BeforeTheGame/ClassInheritance";
+import { WeCanMakeAGame } from "./Games/WeCanMakeAGame";
 
 const slideArray = [
   FirstPage,
@@ -41,9 +48,16 @@ const slideArray = [
   MakeThingsMove,
   DottedLine,
   FoldPaper,
+  WeCanMakeAGame,
   FlappyBirdClone,
   Minesweeper,
   AdventureMan,
+  RethinkJavascript,
+  Classes,
+  ClassInhericance,
+  PrivateFields,
+  Pointers,
+  PointersExample,
   WhereToBegin,
   CreateAGameClass,
   CreateAPlayer,
@@ -66,7 +80,11 @@ const slideArray = [
   Death,
 ];
 
-const slides: Record<number, React.FC> = {};
+export interface SlideProps {
+  subStep: number;
+}
+
+const slides: Record<number, React.FC<SlideProps>> = {};
 slideArray.forEach((slide, index) => {
   slides[index] = slide;
 });
