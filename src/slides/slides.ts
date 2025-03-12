@@ -31,13 +31,15 @@ import { Lives } from "./Monsters/Lives";
 import { Invulnerability } from "./Monsters/Invulnerability";
 import { Death } from "./Monsters/Death";
 import { Pointers } from "./BeforeTheGame/Pointers";
-import { RethinkJavascript } from "./BeforeTheGame/RethinkJavascript";
 import { Classes } from "./BeforeTheGame/Classes";
 import { PrivateFields } from "./BeforeTheGame/PrivateProperties";
 import { PointersExample } from "./BeforeTheGame/PointersExample";
 import { ClassInhericance } from "./BeforeTheGame/ClassInheritance";
 import { WeCanMakeAGame } from "./Games/WeCanMakeAGame";
 import { LetsBuildAGame } from "./BeforeTheGame/LetsBuildAGame";
+import { EmptyWebProject } from "./BuildAGame/EmptyWebProject";
+import { TheEnd } from "./IntroAndOutro/TheEnd";
+import { Demo } from "./IntroAndOutro/Demo";
 
 const slideArray = [
   FirstPage,
@@ -54,13 +56,13 @@ const slideArray = [
   Minesweeper,
   AdventureMan,
   LetsBuildAGame,
-  RethinkJavascript,
   Classes,
   ClassInhericance,
   PrivateFields,
   Pointers,
   PointersExample,
   WhereToBegin,
+  EmptyWebProject,
   CreateAGameClass,
   CreateAPlayer,
   AddPlayerToGame,
@@ -80,6 +82,8 @@ const slideArray = [
   Lives,
   Invulnerability,
   Death,
+  Demo,
+  TheEnd,
 ];
 
 export interface SlideProps {

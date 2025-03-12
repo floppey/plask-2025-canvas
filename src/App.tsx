@@ -12,7 +12,7 @@ function App() {
       if (e.key === "ArrowRight") {
         e.preventDefault();
         const numberOfSlides = Object.keys(slides).length;
-        const nextStep = Math.min(numberOfSlides, step + 1);
+        const nextStep = Math.min(numberOfSlides - 1, step + 1);
         setSubStep(0);
         setStep(nextStep);
       }
