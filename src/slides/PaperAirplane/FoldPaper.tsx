@@ -106,6 +106,7 @@ export const FoldPaper: React.FC = () => {
 const drawFold = async () => {
 // ...
 
+const progress = Math.min(1, frame / 400);
 const angle = -Math.PI * progress;
 
 ctx.fillStyle = progress < 0.5 ? "white" : "lightgrey";

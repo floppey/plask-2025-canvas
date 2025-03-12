@@ -37,6 +37,7 @@ import { PrivateFields } from "./BeforeTheGame/PrivateProperties";
 import { PointersExample } from "./BeforeTheGame/PointersExample";
 import { ClassInhericance } from "./BeforeTheGame/ClassInheritance";
 import { WeCanMakeAGame } from "./Games/WeCanMakeAGame";
+import { LetsBuildAGame } from "./BeforeTheGame/LetsBuildAGame";
 
 const slideArray = [
   FirstPage,
@@ -52,6 +53,7 @@ const slideArray = [
   FlappyBirdClone,
   Minesweeper,
   AdventureMan,
+  LetsBuildAGame,
   RethinkJavascript,
   Classes,
   ClassInhericance,
