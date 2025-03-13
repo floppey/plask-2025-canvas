@@ -40,6 +40,9 @@ import { LetsBuildAGame } from "./BeforeTheGame/LetsBuildAGame";
 import { EmptyWebProject } from "./BuildAGame/EmptyWebProject";
 import { TheEnd } from "./IntroAndOutro/TheEnd";
 import { Demo } from "./IntroAndOutro/Demo";
+import { Transform } from "./AdvancedCanvasFeatures/Transform";
+import { BlendMode } from "./AdvancedCanvasFeatures/BlendMode";
+import { UseOffScreenCanvas } from "./AdvancedCanvasFeatures/OffScreenCanvas";
 
 const slideArray = [
   FirstPage,
@@ -82,6 +85,9 @@ const slideArray = [
   Lives,
   Invulnerability,
   Death,
+  Transform,
+  BlendMode,
+  UseOffScreenCanvas,
   Demo,
   TheEnd,
 ];
